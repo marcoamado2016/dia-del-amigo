@@ -1,3 +1,4 @@
+'use client';
 import TorneoDashboard from './ganador/page';
 
 export default function Home() {
