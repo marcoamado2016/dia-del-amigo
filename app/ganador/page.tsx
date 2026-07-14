@@ -1,6 +1,4 @@
-'use client';
-
-import React from 'react';
+ 
 import {
   Box,
   Card,
@@ -21,10 +19,10 @@ interface Team {
 }
 
 const teamsData: Team[] = [
-  { name: 'ROJO', colorName: 'Rojo', hex: '#d32f2f', points: 120 },
-  { name: 'AZUL', colorName: 'Azul', hex: '#1976d2', points: 95 },
-  { name: 'VERDE', colorName: 'Verde', hex: '#2e7d32', points: 140, hasCrown: true },
-  { name: 'AMARILLO', colorName: 'Amarillo', hex: '#fbc02d', points: 110 },
+  { name: 'ROJO', colorName: 'Rojo', hex: '#d32f2f', points: 120 , hasCrown: true},
+  { name: 'AZUL', colorName: 'Azul', hex: '#1976d2', points: 10 },
+  { name: 'VERDE', colorName: 'Verde', hex: '#2e7d32', points: 10,  },
+  { name: 'AMARILLO', colorName: 'Amarillo', hex: '#fbc02d', points: 10 },
 ];
 
 export default function TorneoColores() {
