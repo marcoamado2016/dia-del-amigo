@@ -1,0 +1,158 @@
+'use client';
+
+import { useState } from 'react';
+import {
+    Box,
+    Paper,
+    Typography,
+    MenuItem,
+    Select,
+    TextField,
+    Button,
+    Stack,
+} from '@mui/material';
+
+const teams = [
+    { name: 'ROJO', color: '#e53935' },
+    { name: 'AZUL', color: '#1e88e5' },
+    { name: 'VERDE', color: '#43a047' },
+    { name: 'AMARILLO', color: '#fdd835' },
+];
+
+export default function CargarResultados() {
+    const [game, setGame] = useState('Juego 1');
+
+    const [scores, setScores] = useState({
+        ROJO: '',
+        AZUL: '',
+        VERDE: '',
+        AMARILLO: '',
+    });
+
+    const handleChange = (team: string, value: string) => {
+        console.log(`Score for ${team}: ${value}`);
+        setScores({
+            ...scores,
+            [team]: value,
+        });
+    };
+
+    const saveResults = () => {
+        console.log("scores",scores)
+        console.log("game",game )
+    }
+
+    return (
+        <Box
+            sx={{
+                minHeight: '100vh',
+                bgcolor: '#08121d',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                p: 3,
+            }}
+
+        >
+            <Paper
+                sx={{
+                    width: 650,
+                    bgcolor: '#e2ebf5',
+                    color: 'white',
+                    p: 4,
+                    borderRadius: 4,
+                }}
+            >
+                <Typography
+                    variant="h4"
+                    align="center"
+                    sx={{
+                        fontWeight: 'bold',
+                        mb: 4,
+                    }}
+                >
+                    CARGAR RESULTADOS
+                </Typography>
+
+                <Typography sx={{ mb: 1 }}>Seleccionar Juego</Typography>
+
+                <Select
+                    fullWidth
+                    value={game}
+                    onChange={(e) => setGame(e.target.value)}
+                    sx={{ mb: 4 }}
+                >
+                    <MenuItem value="Juego 1">Juego 1</MenuItem>
+                    <MenuItem value="Juego 2">Juego 2</MenuItem>
+                    <MenuItem value="Juego 3">Juego 3</MenuItem>
+                    <MenuItem value="Juego 4">Juego 4</MenuItem>
+                </Select>
+
+                <Stack spacing={3}>
+                    {teams.map((team) => (
+                        <Box
+                            key={team.name}
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 3,
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: 180,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 2,
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        width: 18,
+                                        height: 18,
+                                        borderRadius: '50%',
+                                        bgcolor: team.color,
+                                    }}
+                                />
+
+                                <Typography sx={{ fontWeight: 'bold' }}>
+                                    {team.name}
+                                </Typography>
+                            </Box>
+
+                            <TextField
+                                type="number"
+                                value={scores[team.name as keyof typeof scores]}
+                                onChange={(e) =>
+                                    handleChange(team.name, e.target.value)
+                                }
+                                fullWidth
+                                placeholder="0"
+                            />
+                        </Box>
+                    ))}
+                </Stack>
+
+                <Button
+                    fullWidth
+                    size="large"
+                    variant="contained"
+                    sx={{
+                        mt: 5,
+                        py: 1.8,
+                        fontWeight: 'bold',
+                        fontSize: 22,
+                        bgcolor: '#2e7d32',
+                        '&:hover': {
+                            bgcolor: '#1b5e20',
+                        },
+                    }}
+
+                    onClick={saveResults}
+                >
+                    GUARDAR RESULTADOS
+                </Button>
+            </Paper>
+        </Box>
+    );
+}

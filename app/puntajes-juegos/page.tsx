@@ -1,8 +1,8 @@
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 import {
     Box,
     Typography,
-    LinearProgress,
     Paper,
 } from '@mui/material';
 
@@ -16,9 +16,9 @@ interface Team {
 
 const teamsData: Team[] = [
     { name: 'ROJO', colorName: 'Rojo', hex: '#d32f2f', points: 120, hasCrown: true },
-    { name: 'AZUL', colorName: 'Azul', hex: '#1976d2', points: 10 },
-    { name: 'VERDE', colorName: 'Verde', hex: '#2e7d32', points: 10, },
-    { name: 'AMARILLO', colorName: 'Amarillo', hex: '#fbc02d', points: 10 },
+    { name: 'AZUL', colorName: 'Azul', hex: '#1976d2', points: 10 ,hasCrown: true},
+    { name: 'VERDE', colorName: 'Verde', hex: '#2e7d32', points: 10,hasCrown: true },
+    { name: 'AMARILLO', colorName: 'Amarillo', hex: '#fbc02d', points: 10, hasCrown: true },
 ];
 
 export default function PuntosJuegos() {
@@ -26,7 +26,7 @@ export default function PuntosJuegos() {
     return (
         <Box
             sx={{
-                minHeight: '100vh',
+                minHeight: '50vh',
                 bgcolor: '#0a1118',
                 color: '#fff',
                 display: 'flex',
@@ -96,7 +96,9 @@ export default function PuntosJuegos() {
                         >
                             {team.colorName}
                         </Typography>
-
+                        {team.hasCrown && (
+                            <EmojiEventsIcon sx={{ color: '#fbc02d', fontSize: 24 }} />
+                        )}
                         <Typography
                             sx={{
                                 width: 40,
