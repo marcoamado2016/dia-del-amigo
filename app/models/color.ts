@@ -5,6 +5,7 @@ export interface IColor {
     hex: string;
     points: number;
     juego: string;
+    color:string;
 }
 export interface IColorSchema extends Omit<Document, '_id'>, IColor { }
 
