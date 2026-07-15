@@ -2,16 +2,20 @@ import mongoose, { Document, Schema, ObjectId } from "mongoose";
 
 export interface IColor {
     _id: ObjectId | string | undefined;
-    hex: string;
+    puntoRojo: number;
+    puntoAzul: number;
+    puntoVerde: number;
+    puntoAmarillo: number;
     points: number;
     juego: string;
-    color:string;
 }
 export interface IColorSchema extends Omit<Document, '_id'>, IColor { }
 
 const colorSchema: Schema<IColorSchema> = new Schema({
-    hex: { type: String, required: true },
-    points: { type: Number, required: true },
+    puntoRojo: { type: Number, required: true },
+    puntoAzul: { type: Number, required: true },
+    puntoVerde: { type: Number, required: true },
+    puntoAmarillo: { type: Number, required: true },
     juego: { type: String, required: true }
 }, {
     timestamps: true,

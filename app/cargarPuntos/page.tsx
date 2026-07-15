@@ -11,6 +11,7 @@ import {
     Button,
     Stack,
 } from '@mui/material';
+import { ColorServicio } from '../api/guardar-puntaje-color/guardar-color';
 
 const teams = [
     { name: 'ROJO', color: '#e53935' },
@@ -37,9 +38,24 @@ export default function CargarResultados() {
         });
     };
 
-    const saveResults = () => {
-        console.log("scores",scores)
-        console.log("game",game )
+    const saveResults = async () => {
+        console.log("scores", scores)
+        console.log("game", game)
+        let juegoParams = {
+            juego: game,
+            puntoRojo: scores.ROJO,
+            puntoAzul: scores.AZUL,
+            puntoVerde: scores.VERDE,
+            puntoAmarillo: scores.AMARILLO,
+        }
+        const guardarColor = new ColorServicio();
+       guardarColor.guardarColor(juegoParams)
+            .then((response) => {
+                console.log('Puntaje guardado exitosamente:', response);
+            })
+            .catch((error) => {
+                console.error('Error guardando puntaje:', error);
+            });
     }
 
     return (
