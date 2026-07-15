@@ -22,6 +22,7 @@ interface Team {
 export default function TorneoColores() {
   const [teamsData, setTeamsData] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
+  const [nombreJuego, setNombreJuego] = useState(); // Cambia esto según el juego que quieras consultar
   const fetchedRef = useRef(false);
 
   useEffect(() => {
@@ -29,11 +30,13 @@ export default function TorneoColores() {
     fetchedRef.current = true;
     const colores = new ColorServicio();
     colores
-      .obtenerGanadorTodosLosJuegos("Juego 2")
+      .obtenerGanadorTodosLosJuegos("Juego 1")
       .then((data) => {
         console.log('data', data);
+        
         const list: Team[] = [];
         for (const element of data) {
+          setNombreJuego(element.juego);
           console.log('element', element);
           list.push({ points: element.puntoAmarillo ?? 0, hex: '#fbc02d', name: 'AMARILLO', colorName: 'Amarillo' });
           list.push({ points: element.puntoAzul ?? 0, hex: '#1976d2', name: 'AZUL', colorName: 'Azul' });
@@ -62,18 +65,18 @@ export default function TorneoColores() {
       }}
     >
       <Typography variant="h4" component="h1" align="center" gutterBottom sx={{ fontWeight: 'bold' }}>
-        TORNEO DE COLORES
+        {nombreJuego}
       </Typography>
 
       <Typography variant="subtitle1" sx={{ color: '#90a4ae', mb: 4 }}>
-        Resumen General
+        {`Resumen General de Puntajes por Color`}
       </Typography>
 
       {loading && <LinearProgress sx={{ width: '100%', maxWidth: 900, mb: 2 }} />}
 
       <Grid container spacing={2} sx={{ maxWidth: 900, width: '100%', mb: 4 }}>
         {teamsData.map((team, i) => (
-          <Grid  key={team.name}>
+          <Grid key={team.name}>
             <Card
               sx={{
                 backgroundColor: team.hex,
