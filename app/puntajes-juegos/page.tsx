@@ -5,6 +5,8 @@ import {
     Typography,
     Paper,
 } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { ColorServicio } from '../api/guardar-puntaje-color/guardar-color';
 
 interface Team {
     name: string;
@@ -14,15 +16,59 @@ interface Team {
     hasCrown?: boolean;
 }
 
-const teamsData: Team[] = [
-    { name: 'ROJO', colorName: 'Rojo', hex: '#d32f2f', points: 120, hasCrown: true },
-    { name: 'AZUL', colorName: 'Azul', hex: '#1976d2', points: 10 ,hasCrown: true},
-    { name: 'VERDE', colorName: 'Verde', hex: '#2e7d32', points: 10,hasCrown: true },
-    { name: 'AMARILLO', colorName: 'Amarillo', hex: '#fbc02d', points: 10, hasCrown: true },
-];
+
 
 export default function PuntosJuegos() {
-    const rankedTeams = [...teamsData].sort((a, b) => b.points - a.points);
+    const [teamsData, setTeamsData] = useState<Team[]>([]);
+    useEffect(() => {
+        const colores = new ColorServicio();
+        colores
+            .obtenerGanadorTodosLosJuegos()
+            .then((data: any[]) => {
+                console.log('data1234', data);
+                setTeamsData(data.map((item) => {
+
+                    let point = Math.max(item.puntoAmarillo, item.puntoAzul, item.puntoVerde, item.puntoRojo);
+                    let color;
+                    let name;
+                   
+                    if (point == item.puntoAmarillo) {
+                        color = '#fbc02d';
+                        name = 'AMARILLO';
+                    
+                    }
+                    if (point == item.puntoAzul) {
+                        color = '#1976d2';
+                        name = 'AZUL';
+                  
+                    }
+                    if (point == item.puntoVerde) {
+                        color = '#2e7d32';
+                        name = 'VERDE';
+                     
+                    }
+                    if (point == item.puntoRojo) {
+                        color = '#d32f2f';
+                        name = 'ROJO';
+                       
+                    }
+                    return {
+                        name: item.juego,
+                        colorName: name ?? "",
+                        hex: color ?? "",
+                        points: point,
+                        hasCrown: true
+                    }
+
+                }
+                )
+                );
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+    }, [])
+   
     return (
         <Box
             sx={{
@@ -54,12 +100,12 @@ export default function PuntosJuegos() {
                 sx={{
                     width: '100%',
                     maxWidth: 900,
-                    bgcolor: '#023b81',
+                    bgcolor: '#000d1d',
                     borderRadius: 4,
                     p: 3,
                 }}
             >
-                {rankedTeams.map((team, index) => (
+                {teamsData.map((team, index) => (
                     <Box
                         key={team.name}
                         sx={{
@@ -69,9 +115,9 @@ export default function PuntosJuegos() {
                             px: 3,
                             py: 2.5,
                             // Línea divisoria sutil entre filas (excepto la última)
-                            borderBottom: index < rankedTeams.length - 1 ? '1px solid #152232' : 'none',
+                            borderBottom: index < teamsData.length - 1 ? '1px solid #152232' : 'none',
                             '&:hover': {
-                                bgcolor: '#111e2e', // Efecto hover sutil al pasar el cursor
+                                bgcolor: team.hex, // Efecto hover sutil al pasar el cursor
                                 cursor: 'pointer',
                             }
                         }}
@@ -104,6 +150,7 @@ export default function PuntosJuegos() {
                                 width: 40,
                                 textAlign: 'right',
                                 fontWeight: 'bold',
+                                color: '#eceff1'
                             }}
                         >
                             {team.points}

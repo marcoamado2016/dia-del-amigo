@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import { ColorServicio } from '../api/guardar-puntaje-color/guardar-color';
 
 // Datos del campeón
 const championData = {
@@ -33,6 +34,7 @@ export default function CampeonTorneo() {
   const [confettiParticles, setConfettiParticles] = useState<
     ConfettiParticle[]
   >([]);
+  const [ganador, setGanador] = useState<{ name: string; points: number; hex: string } | null>(null);
 
   useEffect(() => {
     const particles = Array.from({ length: 35 }).map((_, i) => ({
@@ -41,15 +43,49 @@ export default function CampeonTorneo() {
       left: `${Math.random() * 100}%`,
       color:
         confettiColors[
-          Math.floor(Math.random() * confettiColors.length)
+        Math.floor(Math.random() * confettiColors.length)
         ],
       size: Math.random() * 6 + 4,
       rotation: `${Math.random() * 360}deg`,
     }));
 
     setConfettiParticles(particles);
-  }, []);
+    const colores = new ColorServicio();
+    colores
+      .obtenerGanadorTodosLosJuegos()
+      .then((data) => {
+        let sumadoAzul = 0;
+        let sumadoRojo = 0;
+        let sumadoVerde = 0;
+        let sumadoAmarillo = 0;
+        for (const item of data) {
+          sumadoAzul += Number(item.puntoAzul) ?? 0;
+          sumadoRojo += Number(item.puntoRojo) ?? 0;
+          sumadoVerde += Number(item.puntoVerde) ?? 0;
+          sumadoAmarillo += Number(item.puntoAmarillo) ?? 0;
+        }
 
+        const totals = [
+          { name: 'AZUL', points: sumadoAzul, hex: '#0288d1' },
+          { name: 'ROJO', points: sumadoRojo, hex: '#d32f2f' },
+          { name: 'VERDE', points: sumadoVerde, hex: '#2e7d32' },
+          { name: 'AMARILLO', points: sumadoAmarillo, hex: '#fbc02d' },
+        ];
+        let mayorPunto = 0;
+        for (const item of totals) {
+
+          if (item.points > mayorPunto) {
+            mayorPunto = item.points;
+            setGanador(item);
+          }
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+  }, []);
+console.log('ganador', ganador);
   return (
     <Box
       sx={{
@@ -129,7 +165,7 @@ export default function CampeonTorneo() {
           zIndex: 2,
         }}
       >
-        ¡Campeón del Torneo!
+        ¡Campeón del Del amigo!
       </Typography>
 
       {/* Nombre */}
@@ -137,7 +173,7 @@ export default function CampeonTorneo() {
         variant="h1"
         sx={{
           fontWeight: 900,
-          color: '#39b54a',
+          color: ganador?.hex,
           fontSize: { xs: '4rem', sm: '6rem' },
           letterSpacing: 3,
           textTransform: 'uppercase',
@@ -146,13 +182,13 @@ export default function CampeonTorneo() {
           zIndex: 2,
         }}
       >
-        {championData.name}
+        {ganador?.name}
       </Typography>
 
       {/* Puntos */}
       <Box
         sx={{
-          border: `2px solid ${championData.hex}`,
+          border: `2px solid ${ganador?.hex ?? championData.hex}`,
           borderRadius: 10,
           px: 6,
           py: 1.5,
@@ -169,7 +205,7 @@ export default function CampeonTorneo() {
             fontSize: { xs: '1.3rem', sm: '1.6rem' },
           }}
         >
-          {championData.points} PUNTOS
+          {ganador?.points ?? championData.points} PUNTOS
         </Typography>
       </Box>
     </Box>

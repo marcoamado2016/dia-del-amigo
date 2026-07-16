@@ -36,7 +36,6 @@ export default function TorneoColores() {
     colores
       .obtenerGanadorTodosLosJuegos(selectedGame)
       .then((data) => {
-        console.log('data', data);
         if (!data || data.length === 0) {
           setTeamsData([]);
           setNombreJuego(selectedGame);
