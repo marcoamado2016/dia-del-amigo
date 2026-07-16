@@ -86,6 +86,7 @@ export default function TorneoColores() {
                 position: 'relative',
                 overflow: 'visible',
                 boxShadow: 3,
+                width: 160,
               }}
             >
               {team.hasCrown && (
