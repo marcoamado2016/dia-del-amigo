@@ -1,3 +1,4 @@
+'use client';
 import {
   Box,
   Card,
@@ -22,7 +23,7 @@ interface Team {
 export default function TorneoColores() {
   const [teamsData, setTeamsData] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
-  const [nombreJuego, setNombreJuego] = useState(); // Cambia esto según el juego que quieras consultar
+  const [nombreJuego, setNombreJuego] = useState("");
   const fetchedRef = useRef(false);
 
   useEffect(() => {
@@ -30,13 +31,12 @@ export default function TorneoColores() {
     fetchedRef.current = true;
     const colores = new ColorServicio();
     colores
-      .obtenerGanadorTodosLosJuegos("Juego 1")
+      .obtenerGanadorTodosLosJuegos("Juego 2")
       .then((data) => {
         console.log('data', data);
-        
         const list: Team[] = [];
         for (const element of data) {
-          setNombreJuego(element.juego);
+          setNombreJuego(element.juego)
           console.log('element', element);
           list.push({ points: element.puntoAmarillo ?? 0, hex: '#fbc02d', name: 'AMARILLO', colorName: 'Amarillo' });
           list.push({ points: element.puntoAzul ?? 0, hex: '#1976d2', name: 'AZUL', colorName: 'Azul' });
@@ -62,14 +62,15 @@ export default function TorneoColores() {
         alignItems: 'center',
         px: 3,
         py: 6,
+        
       }}
     >
       <Typography variant="h4" component="h1" align="center" gutterBottom sx={{ fontWeight: 'bold' }}>
-        {nombreJuego}
+       {`${nombreJuego}`}
       </Typography>
 
       <Typography variant="subtitle1" sx={{ color: '#90a4ae', mb: 4 }}>
-        {`Resumen General de Puntajes por Color`}
+        Resumen General
       </Typography>
 
       {loading && <LinearProgress sx={{ width: '100%', maxWidth: 900, mb: 2 }} />}
@@ -86,7 +87,6 @@ export default function TorneoColores() {
                 position: 'relative',
                 overflow: 'visible',
                 boxShadow: 3,
-                width: 160,
               }}
             >
               {team.hasCrown && (
