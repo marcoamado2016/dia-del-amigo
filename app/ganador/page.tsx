@@ -7,6 +7,10 @@ import {
   Grid,
   LinearProgress,
   Paper,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { useEffect, useState, useRef } from 'react';
@@ -17,39 +21,55 @@ interface Team {
   colorName: string;
   hex: string;
   points: number;
-  hasCrown?: boolean;
+  asCrown?: boolean;
 }
 
 export default function TorneoColores() {
   const [teamsData, setTeamsData] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
   const [nombreJuego, setNombreJuego] = useState("");
-  const fetchedRef = useRef(false);
+  const [selectedGame, setSelectedGame] = useState('Juego 1');
 
   useEffect(() => {
-    if (fetchedRef.current) return;
-    fetchedRef.current = true;
+    setLoading(true);
     const colores = new ColorServicio();
     colores
-      .obtenerGanadorTodosLosJuegos("Juego 2")
+      .obtenerGanadorTodosLosJuegos(selectedGame)
       .then((data) => {
         console.log('data', data);
-        const list: Team[] = [];
-        for (const element of data) {
-          setNombreJuego(element.juego)
-          console.log('element', element);
-          list.push({ points: element.puntoAmarillo ?? 0, hex: '#fbc02d', name: 'AMARILLO', colorName: 'Amarillo' });
-          list.push({ points: element.puntoAzul ?? 0, hex: '#1976d2', name: 'AZUL', colorName: 'Azul' });
-          list.push({ points: element.puntoVerde ?? 0, hex: '#2e7d32', name: 'VERDE', colorName: 'Verde' });
-          list.push({ points: element.puntoRojo ?? 0, hex: '#d32f2f', name: 'ROJO', colorName: 'Rojo' });
+        if (!data || data.length === 0) {
+          setTeamsData([]);
+          setNombreJuego(selectedGame);
+          return;
         }
+
+        const element = data[0];
+        setNombreJuego(element.juego ?? selectedGame);
+
+        const list: Team[] = [
+          { points: element.puntoAmarillo ?? 0, hex: '#fbc02d', name: 'AMARILLO', colorName: 'Amarillo' },
+          { points: element.puntoAzul ?? 0, hex: '#1976d2', name: 'AZUL', colorName: 'Azul' },
+          { points: element.puntoVerde ?? 0, hex: '#2e7d32', name: 'VERDE', colorName: 'Verde' },
+          { points: element.puntoRojo ?? 0, hex: '#d32f2f', name: 'ROJO', colorName: 'Rojo' },
+        ];
+
         setTeamsData(list);
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.error(err);
+        setTeamsData([]);
+      })
       .finally(() => setLoading(false));
-  }, []);
+  }, [selectedGame]);
 
   const leader = teamsData.length ? teamsData.reduce((a, b) => (b.points > a.points ? b : a)) : undefined;
+  console.log('leader', leader);
+  const displayTeams = leader
+    ? teamsData.map((team) => ({
+        ...team,
+        asCrown: team.name === leader.name,
+      }))
+    : teamsData;
 
   return (
     <Box
@@ -62,12 +82,32 @@ export default function TorneoColores() {
         alignItems: 'center',
         px: 3,
         py: 6,
-        
+
       }}
     >
       <Typography variant="h4" component="h1" align="center" gutterBottom sx={{ fontWeight: 'bold' }}>
-       {`${nombreJuego}`}
+        {`${nombreJuego}`}
       </Typography>
+
+      <FormControl sx={{ width: 240, mb: 3 }}>
+        <InputLabel id="select-juego-label">Juego</InputLabel>
+        <Select
+          labelId="select-juego-label"
+          value={selectedGame}
+          label="Juego"
+          onChange={(event) => setSelectedGame(event.target.value)}
+          sx={{ bgcolor: '#0f1823', color: '#fff', borderRadius: 2 }}
+        >
+          {[...Array(8)].map((_, index) => {
+            const value = `Juego ${index + 1}`;
+            return (
+              <MenuItem key={value} value={value}>
+                {value}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
 
       <Typography variant="subtitle1" sx={{ color: '#90a4ae', mb: 4 }}>
         Resumen General
@@ -76,8 +116,8 @@ export default function TorneoColores() {
       {loading && <LinearProgress sx={{ width: '100%', maxWidth: 900, mb: 2 }} />}
 
       <Grid container spacing={2} sx={{ maxWidth: 900, width: '100%', mb: 4 }}>
-        {teamsData.map((team, i) => (
-          <Grid key={team.name}>
+        {displayTeams.map((team, i) => (
+          <Grid key={`${team.name}-${i}`}>
             <Card
               sx={{
                 backgroundColor: team.hex,
@@ -90,7 +130,7 @@ export default function TorneoColores() {
                 width: 200,
               }}
             >
-              {team.hasCrown && (
+              {team.asCrown && (
                 <Box sx={{ position: 'absolute', top: -18, left: '50%', transform: 'translateX(-50%)', bgcolor: '#FFD700', borderRadius: '50%', p: 0.5 }}>
                   <EmojiEventsIcon sx={{ color: '#000' }} />
                 </Box>
@@ -115,13 +155,13 @@ export default function TorneoColores() {
       </Grid>
 
       <Typography variant="subtitle2" sx={{ color: '#90a4ae', mb: 1, fontWeight: 'bold' }}>
-        LÍDER GENERAL
+        GANADOR
       </Typography>
 
       <Paper
         sx={{
-          bgcolor: '#072016',
-          border: '1px solid #1b5e20',
+          bgcolor: '#ffffff',
+          border: `1px solid ${leader?.hex ?? '#4caf50'}`,
           borderRadius: 3,
           p: 2,
           width: '100%',
@@ -132,21 +172,47 @@ export default function TorneoColores() {
           mb: 4,
         }}
       >
-        <Typography variant="h4" sx={{ color: '#4caf50', fontWeight: 'bold' }}>
+        <Typography variant="h4" sx={{ color: leader?.hex ?? '#4caf50', fontWeight: 'bold' }}>
           {leader?.name ?? '-'}
         </Typography>
         <Box sx={{ textAlign: 'right' }}>
-          <Typography variant="h6" sx={{ color: '#fff', lineHeight: 1, fontWeight: 'bold' }}>
+          <Typography variant="h6" sx={{ color: '#0a0a0a', lineHeight: 1, fontWeight: 'bold' }}>
             {leader?.points ?? 0}
           </Typography>
 
-          <Typography variant="caption" sx={{ color: '#90a4ae' }}>
+          <Typography variant="caption" sx={{ color: '#0a0a0a' }}>
             PUNTOS
           </Typography>
         </Box>
       </Paper>
 
-      <Paper sx={{ width: '100%', maxWidth: 900, bgcolor: '#0c1622', borderRadius: 4, p: 3 }}></Paper>
+      <Paper sx={{ width: '100%', maxWidth: 900, bgcolor: '#0c1622', borderRadius: 4, p: 3 }}>
+        <Typography variant="h6" sx={{ color: '#fff', mb: 2, fontWeight: 'bold' }}>
+          Comparativo de puntajes
+        </Typography>
+
+        {displayTeams
+          .slice()
+          .sort((a, b) => b.points - a.points)
+          .map((team) => (
+            <Box key={team.name} sx={{ mb: 2 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                <Typography sx={{ color: '#fff', fontWeight: 'bold' }}>{team.name}</Typography>
+                <Typography sx={{ color: '#fff', fontWeight: 'bold' }}>{team.points}</Typography>
+              </Box>
+              <Box sx={{ width: '100%', bgcolor: '#15212f', borderRadius: 2, overflow: 'hidden' }}>
+                <Box
+                  sx={{
+                    width: `${Math.min(100, team.points * 1.5)}%`,
+                    minWidth: '10px',
+                    height: 12,
+                    bgcolor: team.hex,
+                  }}
+                />
+              </Box>
+            </Box>
+          ))}
+      </Paper>
     </Box>
   );
 }
