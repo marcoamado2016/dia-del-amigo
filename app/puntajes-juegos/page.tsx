@@ -131,7 +131,7 @@ export default function PuntosJuegos() {
                                 width: 90,
                             }}
                         >
-                            Juego {index + 1}
+                             {team.name}
                         </Typography>
                         <Typography
                             sx={{

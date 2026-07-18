@@ -49,7 +49,7 @@ export default function CargarResultados() {
             puntoAmarillo: scores.AMARILLO,
         }
         const guardarColor = new ColorServicio();
-       guardarColor.guardarColor(juegoParams)
+        guardarColor.guardarColor(juegoParams)
             .then((response) => {
                 console.log('Puntaje guardado exitosamente:', response);
             })
@@ -98,10 +98,11 @@ export default function CargarResultados() {
                     onChange={(e) => setGame(e.target.value)}
                     sx={{ mb: 4 }}
                 >
-                    <MenuItem value="Juego 1">Juego 1</MenuItem>
-                    <MenuItem value="Juego 2">Juego 2</MenuItem>
-                    <MenuItem value="Juego 3">Juego 3</MenuItem>
-                    <MenuItem value="Juego 4">Juego 4</MenuItem>
+                    <MenuItem value="El juego del aro">El juego del aro</MenuItem>
+                    <MenuItem value="Elige la opción correcta">Elige la opción correcta</MenuItem>
+                    <MenuItem value="Vóley">Vóley</MenuItem>
+                    <MenuItem value="Cruzando al otro lado">Cruzando al otro lado</MenuItem>
+                    <MenuItem value="Pesca milagrosa">Pesca milagrosa</MenuItem>
                 </Select>
 
                 <Stack spacing={3}>

@@ -28,7 +28,7 @@ export default function TorneoColores() {
   const [teamsData, setTeamsData] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
   const [nombreJuego, setNombreJuego] = useState("");
-  const [selectedGame, setSelectedGame] = useState('Juego 1');
+  const [selectedGame, setSelectedGame] = useState('El juego del aro');
 
   useEffect(() => {
     setLoading(true);
@@ -60,14 +60,14 @@ export default function TorneoColores() {
       })
       .finally(() => setLoading(false));
   }, [selectedGame]);
-
+    console.log("TOTAL teamsData",teamsData)
   const leader = teamsData.length ? teamsData.reduce((a, b) => (b.points > a.points ? b : a)) : undefined;
   console.log('leader', leader);
   const displayTeams = leader
     ? teamsData.map((team) => ({
-        ...team,
-        asCrown: team.name === leader.name,
-      }))
+      ...team,
+      asCrown: team.name === leader.name,
+    }))
     : teamsData;
 
   return (
@@ -97,11 +97,10 @@ export default function TorneoColores() {
           onChange={(event) => setSelectedGame(event.target.value)}
           sx={{ bgcolor: '#0f1823', color: '#fff', borderRadius: 2 }}
         >
-          {[...Array(8)].map((_, index) => {
-            const value = `Juego ${index + 1}`;
+          {['El juego del aro', 'Elige la opción correcta', 'Vóley', 'Cruzando al otro lado', 'Pesca milagrosa'].map((juego, index) => {
             return (
-              <MenuItem key={value} value={value}>
-                {value}
+              <MenuItem key={juego} value={juego}>
+                {juego}
               </MenuItem>
             );
           })}
