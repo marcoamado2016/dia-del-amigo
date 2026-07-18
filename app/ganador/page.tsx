@@ -29,7 +29,7 @@ export default function TorneoColores() {
   const [loading, setLoading] = useState(true);
   const [nombreJuego, setNombreJuego] = useState("");
   const [selectedGame, setSelectedGame] = useState('El juego del aro');
-
+  const [totalJuegos, setTotalJuegos] = useState<Team[]>([]);
   useEffect(() => {
     setLoading(true);
     const colores = new ColorServicio();
@@ -51,7 +51,6 @@ export default function TorneoColores() {
           { points: element.puntoVerde ?? 0, hex: '#2e7d32', name: 'VERDE', colorName: 'Verde' },
           { points: element.puntoRojo ?? 0, hex: '#d32f2f', name: 'ROJO', colorName: 'Rojo' },
         ];
-
         setTeamsData(list);
       })
       .catch((err) => {
@@ -59,15 +58,35 @@ export default function TorneoColores() {
         setTeamsData([]);
       })
       .finally(() => setLoading(false));
-      /**
-       * 
-       * 
-       * 
-       */
+    let acumuladorRojo = 0;
+    let acumuladorAmarillo = 0;
+    let acumuladorVerde = 0;
+    let acumualadorAzul = 0;
+    colores
+      .obtenerGanadorTodosLosJuegos()
+      .then((data: any[]) => {
+        for (const element of data) {
+          acumuladorRojo = acumuladorRojo + element?.puntoRojo;
+          acumualadorAzul = acumualadorAzul + element?.puntoAzul;
+          acumuladorAmarillo = acumuladorAmarillo + element?.puntoAmarillo
+          acumuladorVerde = acumuladorVerde + element?.puntoVerde;
+
+        }
+        const totalPuntos: Team[] = [
+          { points: acumuladorAmarillo ?? 0, hex: '#fbc02d', name: 'AMARILLO', colorName: 'Amarillo' },
+          { points: acumualadorAzul ?? 0, hex: '#1976d2', name: 'AZUL', colorName: 'Azul' },
+          { points: acumuladorVerde ?? 0, hex: '#2e7d32', name: 'VERDE', colorName: 'Verde' },
+          { points: acumuladorRojo ?? 0, hex: '#d32f2f', name: 'ROJO', colorName: 'Rojo' },
+        ];
+        setTotalJuegos(totalPuntos)
+      })
+      .catch((error) => {
+        console.error(error);
+        setTeamsData([]);
+      })
   }, [selectedGame]);
-    console.log("TOTAL teamsData",teamsData)
+  console.log("totalJuegos ",totalJuegos)
   const leader = teamsData.length ? teamsData.reduce((a, b) => (b.points > a.points ? b : a)) : undefined;
-  console.log('leader', leader);
   const displayTeams = leader
     ? teamsData.map((team) => ({
       ...team,
@@ -191,10 +210,10 @@ export default function TorneoColores() {
 
       <Paper sx={{ width: '100%', maxWidth: 900, bgcolor: '#0c1622', borderRadius: 4, p: 3 }}>
         <Typography variant="h6" sx={{ color: '#fff', mb: 2, fontWeight: 'bold' }}>
-          Comparativo de puntajes
+          Total de puntajes en todos los juegos
         </Typography>
 
-        {displayTeams
+        {totalJuegos
           .slice()
           .sort((a, b) => b.points - a.points)
           .map((team) => (
