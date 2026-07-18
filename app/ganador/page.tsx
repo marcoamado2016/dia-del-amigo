@@ -98,14 +98,13 @@ export default function TorneoColores() {
     <Box
       sx={{
         minHeight: '100vh',
-        bgcolor: '#0a1118',
+        background: '#050a14',
         color: '#fff',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         px: 3,
         py: 6,
-
       }}
     >
       <Typography variant="h4" component="h1" align="center" gutterBottom sx={{ fontWeight: 'bold' }}>
@@ -182,7 +181,7 @@ export default function TorneoColores() {
 
       <Paper
         sx={{
-          bgcolor: '#ffffff',
+          bgcolor: '#0e1624',
           border: `1px solid ${leader?.hex ?? '#4caf50'}`,
           borderRadius: 3,
           p: 2,
@@ -198,17 +197,17 @@ export default function TorneoColores() {
           {leader?.name ?? '-'}
         </Typography>
         <Box sx={{ textAlign: 'right' }}>
-          <Typography variant="h6" sx={{ color: '#0a0a0a', lineHeight: 1, fontWeight: 'bold' }}>
+          <Typography variant="h6" sx={{ color: '#fff', lineHeight: 1, fontWeight: 'bold' }}>
             {leader?.points ?? 0}
           </Typography>
 
-          <Typography variant="caption" sx={{ color: '#0a0a0a' }}>
+          <Typography variant="caption" sx={{ color: '#fff' }}>
             PUNTOS
           </Typography>
         </Box>
       </Paper>
 
-      <Paper sx={{ width: '100%', maxWidth: 900, bgcolor: '#0c1622', borderRadius: 4, p: 3 }}>
+      <Paper sx={{ width: '100%', maxWidth: 900, bgcolor: '#0b1320', borderRadius: 4, p: 3, boxShadow: '0 20px 60px rgba(0,0,0,0.35)' }}>
         <Typography variant="h6" sx={{ color: '#fff', mb: 2, fontWeight: 'bold' }}>
           Total de puntajes en todos los juegos
         </Typography>

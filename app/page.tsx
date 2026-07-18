@@ -23,7 +23,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-start bg-zinc-50 font-sans dark:bg-black min-h-screen py-6">
+    <div className="flex flex-col flex-1 items-center justify-start bg-[#050a14] text-white min-h-screen py-6">
       <Box sx={{ mb: 3 }}>
         <ButtonGroup variant="contained" aria-label="navegacion-juegos">
           <Button onClick={() => setView('puntos')}>Puntos</Button>
