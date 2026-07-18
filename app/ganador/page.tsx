@@ -59,6 +59,11 @@ export default function TorneoColores() {
         setTeamsData([]);
       })
       .finally(() => setLoading(false));
+      /**
+       * 
+       * 
+       * 
+       */
   }, [selectedGame]);
     console.log("TOTAL teamsData",teamsData)
   const leader = teamsData.length ? teamsData.reduce((a, b) => (b.points > a.points ? b : a)) : undefined;
