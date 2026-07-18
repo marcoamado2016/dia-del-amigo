@@ -4,10 +4,11 @@ import CargarResultados from './cargarPuntos/page';
 import CampeonTorneo from './copa/page';
 import TorneoColores from './ganador/page';
 import PuntosJuegos from './puntajes-juegos/page';
+import Cronograma from './cronograma/page';
 import { Box, Button, ButtonGroup } from '@mui/material';
 
 export default function Home() {
-  const [view, setView] = useState<'puntos' | 'ganador' | 'copa' | 'cargar'>('puntos');
+  const [view, setView] = useState<'puntos' | 'ganador' | 'copa' | 'cargar' | 'cronograma'>('puntos');
 
   const renderView = () => {
     switch (view) {
@@ -17,6 +18,8 @@ export default function Home() {
         return <CampeonTorneo />;
       case 'cargar':
         return <CargarResultados />;
+      case 'cronograma':
+        return <Cronograma />;
       default:
         return <PuntosJuegos />;
     }
@@ -30,6 +33,7 @@ export default function Home() {
           <Button onClick={() => setView('ganador')}>Ganador</Button>
           <Button onClick={() => setView('copa')}>Copa</Button>
           <Button onClick={() => setView('cargar')}>Cargar</Button>
+          <Button onClick={() => setView('cronograma')}>Cronograma</Button>
         </ButtonGroup>
       </Box>
 
