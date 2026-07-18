@@ -98,11 +98,15 @@ export default function CargarResultados() {
                     onChange={(e) => setGame(e.target.value)}
                     sx={{ mb: 4 }}
                 >
-                    <MenuItem value="El juego del aro">El juego del aro</MenuItem>
-                    <MenuItem value="Elige la opción correcta">Elige la opción correcta</MenuItem>
+                    <MenuItem value="La pasada de aros">La pasada de aros</MenuItem>
+                    <MenuItem value="Pesca Milagrosa">Pesca Milagrosa</MenuItem>
+                    <MenuItem value="Tatetí">Tatetí</MenuItem>
+                    <MenuItem value="Versículo Fugaz">Versículo Fugaz</MenuItem>
                     <MenuItem value="Vóley">Vóley</MenuItem>
-                    <MenuItem value="Cruzando al otro lado">Cruzando al otro lado</MenuItem>
-                    <MenuItem value="Pesca milagrosa">Pesca milagrosa</MenuItem>
+                    <MenuItem value="Pirámide de vasos">Pirámide de vasos</MenuItem>
+                    <MenuItem value="Piedra, papel y tijera">Piedra, papel y tijera</MenuItem>
+                    <MenuItem value="Elige la opción correcta">Elige la opción correcta</MenuItem>
+                    <MenuItem value="Abecedario bíblico">Abecedario bíblico</MenuItem>
                 </Select>
 
                 <Stack spacing={3}>

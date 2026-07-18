@@ -5,10 +5,11 @@ import CampeonTorneo from './copa/page';
 import TorneoColores from './ganador/page';
 import PuntosJuegos from './puntajes-juegos/page';
 import Cronograma from './cronograma/page';
+import BombaTimer from './components/BombaTimer';
 import { Box, Button, ButtonGroup } from '@mui/material';
 
 export default function Home() {
-  const [view, setView] = useState<'puntos' | 'ganador' | 'copa' | 'cargar' | 'cronograma'>('puntos');
+  const [view, setView] = useState<'puntos' | 'ganador' | 'copa' | 'cargar' | 'cronograma' | 'bomba'>('puntos');
 
   const renderView = () => {
     switch (view) {
@@ -20,6 +21,8 @@ export default function Home() {
         return <CargarResultados />;
       case 'cronograma':
         return <Cronograma />;
+      case 'bomba':
+        return <BombaTimer />;
       default:
         return <PuntosJuegos />;
     }
@@ -34,6 +37,7 @@ export default function Home() {
           <Button onClick={() => setView('copa')}>Copa</Button>
           <Button onClick={() => setView('cargar')}>Cargar</Button>
           <Button onClick={() => setView('cronograma')}>Cronograma</Button>
+          <Button onClick={() => setView('bomba')}>Bomba</Button>
         </ButtonGroup>
       </Box>
 

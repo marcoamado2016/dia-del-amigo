@@ -1,3 +1,5 @@
+'use client';
+
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 import {

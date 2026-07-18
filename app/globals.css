@@ -49,3 +49,41 @@ body::-webkit-scrollbar-thumb {
 body::before {
   display: none;
 }
+
+.bomb-stage.is-running .bomb-illustration {
+  animation: bomb-pulse 1s ease-in-out infinite;
+}
+
+.bomb-stage.is-exploded .explosion {
+  animation: explosion-pop 0.6s ease-out forwards;
+}
+
+.explosion-ray {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 6px solid rgba(254, 240, 138, 0.75);
+  transform: scale(0.2);
+  opacity: 0;
+  animation: ray-spread 0.7s ease-out forwards;
+}
+
+.explosion-ray.ray-2 { animation-delay: 0.08s; }
+.explosion-ray.ray-3 { animation-delay: 0.16s; }
+.explosion-ray.ray-4 { animation-delay: 0.24s; }
+
+@keyframes bomb-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+@keyframes explosion-pop {
+  0% { transform: scale(0.2); opacity: 0.2; }
+  50% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.2); opacity: 0.9; }
+}
+
+@keyframes ray-spread {
+  0% { transform: scale(0.2); opacity: 0.7; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
