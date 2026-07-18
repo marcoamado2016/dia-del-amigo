@@ -96,7 +96,7 @@ export default function PuntosJuegos() {
                 }}
 
             >
-                PUNTAJES DE  JUEGOS
+                Puntaje de ganadores
             </Typography>
             <Paper
                 sx={{
@@ -107,49 +107,66 @@ export default function PuntosJuegos() {
                     p: 3,
                 }}
             >
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gridTemplateColumns: '1.5fr 1fr 0.6fr 0.8fr',
+                        gap: 2,
+                        px: 3,
+                        py: 1.5,
+                        borderBottom: '1px solid #152232',
+                        color: '#94a3b8',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        fontSize: '0.8rem',
+                    }}
+                >
+                    <Box>Juegos</Box>
+                    <Box>Equipo</Box>
+                    <Box>Copa</Box>
+                    <Box>Puntos</Box>
+                </Box>
+
                 {teamsData.map((team, index) => (
                     <Box
                         key={team.name}
                         sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
+                            display: 'grid',
+                            gridTemplateColumns: '1.5fr 1fr 0.6fr 0.8fr',
+                            gap: 2,
                             px: 3,
                             py: 2.5,
-                            // Línea divisoria sutil entre filas (excepto la última)
                             borderBottom: index < teamsData.length - 1 ? '1px solid #152232' : 'none',
                             '&:hover': {
-                                bgcolor: team.hex, // Efecto hover sutil al pasar el cursor
+                                bgcolor: team.hex,
                                 cursor: 'pointer',
                             }
                         }}
                     >
-
                         <Typography
                             sx={{
                                 fontSize: '1.1rem',
                                 color: '#eceff1',
                                 fontWeight: 500,
-                                width: 90,
                             }}
                         >
-                             {team.name}
+                            {team.name}
                         </Typography>
                         <Typography
                             sx={{
-                                width: 100,
                                 color: team.hex,
                                 fontWeight: 'bold',
                             }}
                         >
                             {team.colorName}
                         </Typography>
-                        {team.hasCrown && (
-                            <EmojiEventsIcon sx={{ color: '#fbc02d', fontSize: 24 }} />
-                        )}
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            {team.hasCrown && (
+                                <EmojiEventsIcon sx={{ color: '#fbc02d', fontSize: 24 }} />
+                            )}
+                        </Box>
                         <Typography
                             sx={{
-                                width: 40,
                                 textAlign: 'right',
                                 fontWeight: 'bold',
                                 color: '#eceff1'

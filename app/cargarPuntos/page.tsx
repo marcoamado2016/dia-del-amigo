@@ -74,7 +74,7 @@ export default function CargarResultados() {
                 sx={{
                     width: 650,
                     bgcolor: '#e2ebf5',
-                    color: 'white',
+                    color: '#0f172a',
                     p: 4,
                     borderRadius: 4,
                 }}
@@ -96,7 +96,7 @@ export default function CargarResultados() {
                     fullWidth
                     value={game}
                     onChange={(e) => setGame(e.target.value)}
-                    sx={{ mb: 4 }}
+                    sx={{ mb: 4, color: '#0f172a', '& .MuiSelect-icon': { color: '#0f172a' } }}
                 >
                     <MenuItem value="La pasada de aros">La pasada de aros</MenuItem>
                     <MenuItem value="Pesca Milagrosa">Pesca Milagrosa</MenuItem>
@@ -149,6 +149,20 @@ export default function CargarResultados() {
                                 }
                                 fullWidth
                                 placeholder="0"
+                                sx={{
+                                    '& .MuiInputBase-input': {
+                                        color: '#0f172a',
+                                    },
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#cbd5e1',
+                                    },
+                                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#94a3b8',
+                                    },
+                                    '& .MuiInputLabel-root': {
+                                        color: '#0f172a',
+                                    },
+                                }}
                             />
                         </Box>
                     ))}
